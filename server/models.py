@@ -68,12 +68,24 @@ class CustomerSchema(Schema):
     id = fields.Int()      # customer's ID
     name = fields.Str()    # customer's name
 
+    # nested reviews, skip their customer to prevent a loop:
+    reviews = fields.Nested(lambda: ReviewSchema(exclude=('customer',)), many=True)
+
+
 class ItemSchema(Schema):
     id = fields.Int()       # item's ID
     name = fields.Str()     # item's name
     price = fields.Float()  # item's price (decimal number)
 
+    # nested reviews, skip their item to prevent a loop:
+    reviews = fields.Nested(lambda: ReviewSchema(exclude=('item',)), many=True)
+
 
 class ReviewSchema(Schema):
     id = fields.Int()       # review's ID
     comment = fields.Str()  # review text
+
+    # nest the related customer and item, serialized by their own schemas:
+    # nested customer skips their reviews to prevent a loop:
+    customer = fields.Nested(CustomerSchema(exclude=('reviews',)))
+    item = fields.Nested(ItemSchema(exclude=('reviews',)))          # uses review.item, excludes reviews
