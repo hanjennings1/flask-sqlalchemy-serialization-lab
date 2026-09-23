@@ -59,3 +59,21 @@ class Review(db.Model):
 
     def __repr__(self):  # how a review prints in the shell
         return f'<Review {self.id}, {self.comment}, {self.customer_id}, {self.item_id}>'
+
+
+
+# --- SCHEMAS (turn model objects into plain dictionaries) ---
+
+class CustomerSchema(Schema):
+    id = fields.Int()      # customer's ID
+    name = fields.Str()    # customer's name
+
+class ItemSchema(Schema):
+    id = fields.Int()       # item's ID
+    name = fields.Str()     # item's name
+    price = fields.Float()  # item's price (decimal number)
+
+
+class ReviewSchema(Schema):
+    id = fields.Int()       # review's ID
+    comment = fields.Str()  # review text
