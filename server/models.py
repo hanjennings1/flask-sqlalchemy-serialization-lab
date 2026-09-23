@@ -17,6 +17,9 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
+    # a customer has many reviews
+    reviews = db.relationship('Review', back_populates='customer')  # pairs with Review.customer
+
     def __repr__(self):
         return f'<Customer {self.id}, {self.name}>'
 
@@ -27,6 +30,9 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     price = db.Column(db.Float)
+
+    # an item has many reviews
+    reviews = db.relationship('Review', back_populates='item')  # pairs with Review.item
 
     def __repr__(self):
         return f'<Item {self.id}, {self.name}, {self.price}>'
@@ -43,6 +49,10 @@ class Review(db.Model):
     # foreign keys: point to the related customer and item (use table names)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+
+    # each review belongs to one customer and one item
+    customer = db.relationship('Customer', back_populates='reviews')  # pairs with Customer.reviews
+    item = db.relationship('Item', back_populates='reviews')  # pairs with Item.reviews
 
     def __repr__(self):  # how a review prints in the shell
         return f'<Review {self.id}, {self.comment}, {self.customer_id}, {self.item_id}>'
