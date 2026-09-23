@@ -89,3 +89,4 @@ class ReviewSchema(Schema):
     # nested customer skips their reviews to prevent a loop:
     customer = fields.Nested(CustomerSchema(exclude=('reviews',)))
     item = fields.Nested(ItemSchema(exclude=('reviews',)))          # uses review.item, excludes reviews
+    
