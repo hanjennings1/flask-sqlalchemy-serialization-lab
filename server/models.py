@@ -30,3 +30,19 @@ class Item(db.Model):
 
     def __repr__(self):
         return f'<Item {self.id}, {self.name}, {self.price}>'
+
+
+# -- REVIEW MODEL ---
+# join table with comment, customer_id, and item_id
+class Review(db.Model):
+    __tablename__ = 'reviews'  # table name in the database
+
+    id = db.Column(db.Integer, primary_key=True)  # unique ID for each review
+    comment = db.Column(db.String)  # the review text
+
+    # foreign keys: point to the related customer and item (use table names)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+
+    def __repr__(self):  # how a review prints in the shell
+        return f'<Review {self.id}, {self.comment}, {self.customer_id}, {self.item_id}>'
