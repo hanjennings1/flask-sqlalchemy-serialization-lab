@@ -20,6 +20,9 @@ class Customer(db.Model):
     # a customer has many reviews
     reviews = db.relationship('Review', back_populates='customer')  # pairs with Review.customer
 
+    # shortcut: get items directly through this customer's reviews
+    items = association_proxy('reviews', 'item')  # follow reviews -> each review's item
+
     def __repr__(self):
         return f'<Customer {self.id}, {self.name}>'
 
